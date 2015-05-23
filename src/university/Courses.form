@@ -2,27 +2,27 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="universityPUEntityManager">
+    <Component class="javax.persistence.EntityManager" name="coursesPUEntityManager">
       <Properties>
         <Property name="persistenceUnit" type="java.lang.String" value="university?zeroDateTimeBehavior=convertToNullPU"/>
       </Properties>
     </Component>
-    <Component class="javax.persistence.Query" name="tblUniversityQuery">
+    <Component class="javax.persistence.Query" name="tblCoursesQuery">
       <Properties>
         <Property name="query" type="java.lang.String" value="SELECT u FROM University_1 u"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="universityPUEntityManager"/>
+          <ComponentRef name="coursesPUEntityManager"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="java.util.List" name="tblUniversityList">
+    <Component class="java.util.List" name="tblCoursesList">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="tblUniversityQuery"/>
+          <ComponentRef name="tblCoursesQuery"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;university.TblUniversity&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;university.TblCourses&gt;"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>
@@ -87,7 +87,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tblUniversity">
+        <Component class="javax.swing.JTable" name="tblCourses">
           <Properties>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
@@ -128,7 +128,7 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="tblUniversityList" target="tblUniversity" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="tblCoursesList" target="tblCourses" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${code}">
                 <BindingParameter name="NAME" value="Code"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>

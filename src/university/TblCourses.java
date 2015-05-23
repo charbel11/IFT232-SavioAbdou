@@ -24,14 +24,14 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "university", catalog = "university", schema = "")
 @NamedQueries({
-    @NamedQuery(name = "University_1.findAll", query = "SELECT u FROM University_1 u"),
-    @NamedQuery(name = "University_1.findByCode", query = "SELECT u FROM University_1 u WHERE u.code = :code"),
-    @NamedQuery(name = "University_1.findByName", query = "SELECT u FROM University_1 u WHERE u.name = :name"),
-    @NamedQuery(name = "University_1.findByDescription", query = "SELECT u FROM University_1 u WHERE u.description = :description"),
-    @NamedQuery(name = "University_1.findByType", query = "SELECT u FROM University_1 u WHERE u.type = :type"),
-    @NamedQuery(name = "University_1.findByNumberofcredit", query = "SELECT u FROM University_1 u WHERE u.numberofcredit = :numberofcredit"),
-    @NamedQuery(name = "University_1.findByLab", query = "SELECT u FROM University_1 u WHERE u.lab = :lab")})
-public class TblUniversity implements Serializable {
+    @NamedQuery(name = "tblCoursesList.findAll", query = "SELECT u FROM tblCoursesList u"),
+    @NamedQuery(name = "tblCoursesList.findByCode", query = "SELECT u FROM tblCoursesList u WHERE u.code = :code"),
+    @NamedQuery(name = "tblCoursesList.findByName", query = "SELECT u FROM tblCoursesList u WHERE u.name = :name"),
+    @NamedQuery(name = "tblCoursesList.findByDescription", query = "SELECT u FROM tblCoursesList u WHERE u.description = :description"),
+    @NamedQuery(name = "tblCoursesList.findByType", query = "SELECT u FROM tblCoursesList u WHERE u.type = :type"),
+    @NamedQuery(name = "tblCoursesList.findByNumberofcredit", query = "SELECT u FROM tblCoursesList u WHERE u.numberofcredit = :numberofcredit"),
+    @NamedQuery(name = "tblCoursesList.findByLab", query = "SELECT u FROM tblCoursesList u WHERE u.lab = :lab")})
+public class TblCourses implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -54,14 +54,14 @@ public class TblUniversity implements Serializable {
     @Column(name = "lab")
     private String lab;
 
-    public TblUniversity() {
+    public TblCourses() {
     }
 
-    public TblUniversity(String code) {
+    public TblCourses(String code) {
         this.code = code;
     }
 
-    public TblUniversity(String code, String name, String type, String numberofcredit, String lab) {
+    public TblCourses(String code, String name, String type, String numberofcredit, String lab) {
         this.code = code;
         this.name = name;
         this.type = type;
@@ -139,10 +139,10 @@ public class TblUniversity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblUniversity)) {
+        if (!(object instanceof TblCourses)) {
             return false;
         }
-        TblUniversity other = (TblUniversity) object;
+        TblCourses other = (TblCourses) object;
         if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
             return false;
         }

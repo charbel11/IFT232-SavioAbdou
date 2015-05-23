@@ -11,25 +11,22 @@ import javax.swing.JOptionPane;
  *
  * @author Savio
  */
-public class University extends javax.swing.JFrame {
+public class Courses extends javax.swing.JFrame {
 
         public Connection con;
 
     /**
      * Creates new form University
      */
-    public University() {
+    public Courses() {
         initComponents();
-        this.setTitle("LCU University");
+        this.setTitle("LCU University Courses");
         this.setLocationRelativeTo(this);
-        tblUniversity.getColumnModel().getColumn(0).setMinWidth(0);
-        tblUniversity.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblCourses.getColumnModel().getColumn(0).setMinWidth(0);
+        tblCourses.getColumnModel().getColumn(0).setMaxWidth(0);
         getConnection();
     }
 
-    private University(University aThis, boolean b, Connection con, int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     private void getConnection() {
         try {
@@ -54,18 +51,18 @@ public class University extends javax.swing.JFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        universityPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("university?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
-        tblUniversityQuery = java.beans.Beans.isDesignTime() ? null : universityPUEntityManager.createQuery("SELECT u FROM University_1 u");
-        tblUniversityList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tblUniversityQuery.getResultList();
+        coursesPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("university?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
+        tblCoursesQuery = java.beans.Beans.isDesignTime() ? null : coursesPUEntityManager.createQuery("SELECT u FROM University_1 u");
+        tblCoursesList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tblCoursesQuery.getResultList();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblUniversity = new javax.swing.JTable();
+        tblCourses = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         btnModify = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblUniversityList, tblUniversity);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblCoursesList, tblCourses);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${code}"));
         columnBinding.setColumnName("Code");
         columnBinding.setColumnClass(String.class);
@@ -91,7 +88,7 @@ public class University extends javax.swing.JFrame {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(tblUniversity);
+        jScrollPane1.setViewportView(tblCourses);
 
         btnAdd.setText("Add");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -147,20 +144,21 @@ public class University extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-            University newUniversity = new University (this, true, con, 0);
-        newUniversity.setVisible(true);
+            Course newCourse = new Course (this, true, con, 0);
+        newCourse.setVisible(true);
         refreshTable();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         // TODO add your handling code here:
-   int selectedRow = tblUniversity.getSelectedRow();
+   int selectedRow = tblCourses.getSelectedRow();
         if (selectedRow > -1) {
-            int code = Integer.parseInt(tblUniversity.getValueAt(selectedRow, 0).toString());
-            University newUniversity = new University (this, true, con, code);
-            newUniversity.setVisible(true);
+            int code = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
+            Course newCourse = new Course (this, true, con, code);
+            newCourse.setVisible(true);
             refreshTable();
         } else {
             JOptionPane.showMessageDialog(this, "Select a record to modify",
@@ -170,12 +168,12 @@ public class University extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-                int selectedRow = tblUniversity.getSelectedRow();
+                int selectedRow = tblCourses.getSelectedRow();
         if (selectedRow > -1) {
-            int code = Integer.parseInt(tblUniversity.getValueAt(selectedRow, 0).toString());
+            int code = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
             try {
                 Statement stmt = con.createStatement();
-                stmt.execute("Delete From tbl_university Where code =" + code);
+                stmt.execute("Delete From courses Where code =" + code);
                 refreshTable();
             } catch (SQLException ex) {
                 System.err.println(ex.getMessage());
@@ -184,21 +182,22 @@ public class University extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Select a record to delete",
                     "Warning", JOptionPane.WARNING_MESSAGE);
         }
+    
     }//GEN-LAST:event_btnDeleteActionPerformed
 
         private void refreshTable() {
-        universityPUEntityManager.getTransaction().begin();
-        java.util.Collection data = tblUniversityQuery.getResultList();
+        coursesPUEntityManager.getTransaction().begin();
+        java.util.Collection data = tblCoursesQuery.getResultList();
         for (Object entity : data) {
-            universityPUEntityManager.refresh(entity);
+            coursesPUEntityManager.refresh(entity);
         }
-        tblUniversityList.clear();
-        tblUniversityList.addAll(data);
-        universityPUEntityManager.getTransaction().commit();
+        tblCoursesList.clear();
+        tblCoursesList.addAll(data);
+        coursesPUEntityManager.getTransaction().commit();
         bindingGroup.unbind();
         bindingGroup.bind();
-        tblUniversity.getColumnModel().getColumn(0).setMinWidth(0);
-        tblUniversity.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblCourses.getColumnModel().getColumn(0).setMinWidth(0);
+        tblCourses.getColumnModel().getColumn(0).setMaxWidth(0);
     }
     
     /**
@@ -218,20 +217,21 @@ public class University extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(University.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Courses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(University.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Courses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(University.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Courses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(University.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Courses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new University().setVisible(true);
+                new Courses().setVisible(true);
             }
         });
     }
@@ -242,11 +242,11 @@ public class University extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;
+    private javax.persistence.EntityManager coursesPUEntityManager;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblUniversity;
-    private java.util.List<university.TblUniversity> tblUniversityList;
-    private javax.persistence.Query tblUniversityQuery;
-    private javax.persistence.EntityManager universityPUEntityManager;
+    private javax.swing.JTable tblCourses;
+    private java.util.List<university.TblCourses> tblCoursesList;
+    private javax.persistence.Query tblCoursesQuery;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
