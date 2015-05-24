@@ -7,19 +7,20 @@ package university;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Savio
  */
 public class Courses extends javax.swing.JFrame {
-
-        public Connection con;
+        
+    public Connection con;
 
     /**
      * Creates new form University
      */
     public Courses() {
-        initComponents();
+                initComponents();
         this.setTitle("LCU University Courses");
         this.setLocationRelativeTo(this);
         tblCourses.getColumnModel().getColumn(0).setMinWidth(0);
@@ -28,7 +29,8 @@ public class Courses extends javax.swing.JFrame {
     }
 
 
-    private void getConnection() {
+
+        private void getConnection() {
         try {
             String JDBC_DRIVER = "com.mysql.jdbc.Driver";
             String DB_URL = "jdbc:mysql://localhost:3306/university";
@@ -40,6 +42,7 @@ public class Courses extends javax.swing.JFrame {
             System.err.println(ex.getMessage());
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -147,33 +150,35 @@ public class Courses extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-            Course newCourse = new Course (this, true, con, 0);
+              Course newCourse = new Course(this, true, con, 0);
         newCourse.setVisible(true);
         refreshTable();
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
-        // TODO add your handling code here:
-   int selectedRow = tblCourses.getSelectedRow();
+        // TODO add your handling code here:                                         
+        int selectedRow = tblCourses.getSelectedRow();
         if (selectedRow > -1) {
-            int code = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
-            Course newCourse = new Course (this, true, con, code);
+            int crsid = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
+            Course newCourse = new Course(this, true, con, crsid);
             newCourse.setVisible(true);
             refreshTable();
         } else {
             JOptionPane.showMessageDialog(this, "Select a record to modify",
                     "Warning", JOptionPane.WARNING_MESSAGE);
         }
+    
     }//GEN-LAST:event_btnModifyActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-                int selectedRow = tblCourses.getSelectedRow();
+             int selectedRow = tblCourses.getSelectedRow();
         if (selectedRow > -1) {
-            int code = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
+            int crsid = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
             try {
                 Statement stmt = con.createStatement();
-                stmt.execute("Delete From courses Where code =" + code);
+                stmt.execute("Delete From tbl_courses Where crs_id =" + crsid);
                 refreshTable();
             } catch (SQLException ex) {
                 System.err.println(ex.getMessage());
@@ -182,7 +187,7 @@ public class Courses extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Select a record to delete",
                     "Warning", JOptionPane.WARNING_MESSAGE);
         }
-    
+
     }//GEN-LAST:event_btnDeleteActionPerformed
 
         private void refreshTable() {
@@ -199,6 +204,8 @@ public class Courses extends javax.swing.JFrame {
         tblCourses.getColumnModel().getColumn(0).setMinWidth(0);
         tblCourses.getColumnModel().getColumn(0).setMaxWidth(0);
     }
+
+   
     
     /**
      * @param args the command line arguments

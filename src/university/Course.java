@@ -10,58 +10,55 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Savio
+ * @author Prof
  */
 import java.sql.*;
 
 public class Course extends javax.swing.JDialog {
 
     private Connection con;
-    private String code;
-    
-    /**
-     * Creates new form Students
-     */
-    public Course(java.awt.Frame parent, boolean modal) {
+    private int crsid;
+
+    public Course(java.awt.Frame parent, boolean modal, Connection con, int crsid) {
         super(parent, modal);
         initComponents();
         this.setTitle("Course");
         this.setLocationRelativeTo(this);
         this.con = con;
-        this.code = code;
+        this.crsid = crsid;
         populate();
     }
 
 
 
 
-
-    private void populate() {
+private void populate() {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs
                     = stmt.executeQuery("Select * "
-                            + "From courses Where code =" + code);
+                            + "From tbl_courses Where crs_id =" + crsid);
             if (rs.next()) {
-                txtCode.setText(rs.getString("code"));
-                txtName.setText(rs.getString("name"));
-                if(rs.getString("type").equals("major")){
+                txtCode.setText(rs.getString("crs_code"));
+                txtName.setText(rs.getString("crs_name"));
+                if(rs.getString("crs_type").equals("Major")){
                     rbMajor.setSelected(true);
                 }else{
                     rbElective.setSelected(true);
                 }
-                cbxNumberOfCredit.setSelectedItem(rs.getString("numberofcredit"));
-                if(rs.getString("lab").equals("No")){
+                cbxNumberOfCredit.setSelectedItem(rs.getString("crs_numberofcredit"));
+                if(rs.getString("crs_lab").equals("No")){
                     chkLab.setSelected(false);
                 }else{
                     chkLab.setSelected(true);
                 }
-                txtDescription.setText(rs.getString("description"));
+                txtDescription.setText(rs.getString("crs_description"));
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -194,7 +191,7 @@ public class Course extends javax.swing.JDialog {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        if (txtCode.getText().equals("")) {
+         if (txtCode.getText().equals("")) {
             JOptionPane.showMessageDialog(this,
                     "Enter a Course Code", "Warning",
                     JOptionPane.WARNING_MESSAGE);
@@ -203,7 +200,7 @@ public class Course extends javax.swing.JDialog {
                     "Enter a Course Name", "Warning",
                     JOptionPane.WARNING_MESSAGE);
         } else {
-            String code = txtCode.getText();
+            String Code = txtCode.getText();
             String Name = txtName.getText();
             String type;
             if (rbMajor.isSelected()) {
@@ -224,25 +221,25 @@ public class Course extends javax.swing.JDialog {
             String description = txtDescription.getText();
             try {
                 PreparedStatement pstmt;
-        if (txtCode.getText().equals("")) {
+                if(crsid==0){
                        pstmt = con.prepareStatement("Insert Into "
-                                + "courses (code,"
-                                + "name, description, "
-                                + "type, numberofcredit, "
-                                + "lab) "
-                                + "Values ( '" + code + "', "
-                                + "'" + Name + "', '" + description + "', "
-                                + type + ", '" + numberOfCredit + "', "
-                                + lab + "')");
+                                + "tbl_courses (crs_code,"
+                                + "crs_name, crs_type, "
+                                + "crs_numberofcredit, crs_lab, "
+                                + "crs_description) "
+                                + "Values ( '" + Code + "', "
+                                + "'" + Name + "', '" + type + "', "
+                                + numberOfCredit + ", '" + lab + "', "
+                                + description  + "')");
                 }else{
-                    pstmt = con.prepareStatement("Update courses "
-                            + "Set code = '" + code + "', "
-                            + "name = '" + Name + "', "
-                            + "description = '" + description + "', "
-                            + "type = " + type + ", "
-                            + "numberofcredit = '" + numberOfCredit + "', "
-                            + "lab = '" + lab + "' "
-                            + "Where code = " + code);
+                    pstmt = con.prepareStatement("Update tbl_courses "
+                            + "Set crs_code = '" + Code + "', "
+                            + "crs_Name = '" + Name + "', "
+                            + "crs_type = '" + type + "', "
+                            + "crs_numberofcredit = " + numberOfCredit + ", "
+                            + "crs_lab = '" + lab + "', "
+                            + "crs_description = '" + description + "' "
+                            + "Where crs_id = " + crsid);
                 }
                 pstmt.execute();
                 this.dispose();
@@ -283,9 +280,9 @@ public class Course extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+             java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Course dialog = new Course(new javax.swing.JFrame(), true);
+                Course dialog = new Course(new javax.swing.JFrame(), true, null, 0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -296,7 +293,6 @@ public class Course extends javax.swing.JDialog {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
     private javax.swing.ButtonGroup buttonGroup1;
