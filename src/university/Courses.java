@@ -160,8 +160,8 @@ public class Courses extends javax.swing.JFrame {
         // TODO add your handling code here:                                         
         int selectedRow = tblCourses.getSelectedRow();
         if (selectedRow > -1) {
-            int crsid = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
-            Course newCourse = new Course(this, true, con, crsid);
+            int crs_id = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
+            Course newCourse = new Course(this, true, con, crs_id);
             newCourse.setVisible(true);
             refreshTable();
         } else {
@@ -175,10 +175,10 @@ public class Courses extends javax.swing.JFrame {
         // TODO add your handling code here:
              int selectedRow = tblCourses.getSelectedRow();
         if (selectedRow > -1) {
-            int crsid = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
+            int crs_id = Integer.parseInt(tblCourses.getValueAt(selectedRow, 0).toString());
             try {
                 Statement stmt = con.createStatement();
-                stmt.execute("Delete From tbl_courses Where crs_id =" + crsid);
+                stmt.execute("Delete From tbl_courses Where crs_id =" + crs_id);
                 refreshTable();
             } catch (SQLException ex) {
                 System.err.println(ex.getMessage());

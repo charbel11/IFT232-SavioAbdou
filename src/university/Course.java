@@ -17,15 +17,15 @@ import java.sql.*;
 public class Course extends javax.swing.JDialog {
 
     private Connection con;
-    private int crsid;
+    private int crs_id;
 
-    public Course(java.awt.Frame parent, boolean modal, Connection con, int crsid) {
+    public Course(java.awt.Frame parent, boolean modal, Connection con, int crs_id) {
         super(parent, modal);
         initComponents();
         this.setTitle("Course");
         this.setLocationRelativeTo(this);
         this.con = con;
-        this.crsid = crsid;
+        this.crs_id = crs_id;
         populate();
     }
 
@@ -37,7 +37,7 @@ private void populate() {
             Statement stmt = con.createStatement();
             ResultSet rs
                     = stmt.executeQuery("Select * "
-                            + "From tbl_courses Where crs_id =" + crsid);
+                            + "From tbl_courses Where crs_id =" + crs_id);
             if (rs.next()) {
                 txtCode.setText(rs.getString("crs_code"));
                 txtName.setText(rs.getString("crs_name"));
@@ -221,7 +221,7 @@ private void populate() {
             String description = txtDescription.getText();
             try {
                 PreparedStatement pstmt;
-                if(crsid==0){
+                if(crs_id==0){
                        pstmt = con.prepareStatement("Insert Into "
                                 + "tbl_courses (crs_code,"
                                 + "crs_name, crs_type, "
@@ -234,12 +234,12 @@ private void populate() {
                 }else{
                     pstmt = con.prepareStatement("Update tbl_courses "
                             + "Set crs_code = '" + Code + "', "
-                            + "crs_Name = '" + Name + "', "
+                            + "crs_name = '" + Name + "', "
                             + "crs_type = '" + type + "', "
                             + "crs_numberofcredit = " + numberOfCredit + ", "
                             + "crs_lab = '" + lab + "', "
                             + "crs_description = '" + description + "' "
-                            + "Where crs_id = " + crsid);
+                            + "Where crs_id = " + crs_id);
                 }
                 pstmt.execute();
                 this.dispose();
