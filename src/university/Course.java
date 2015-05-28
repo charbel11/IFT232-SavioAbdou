@@ -32,7 +32,8 @@ public class Course extends javax.swing.JDialog {
 
 
 
-private void populate() {
+
+  private void populate() {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs
@@ -48,16 +49,17 @@ private void populate() {
                 }
                 cbxNumberOfCredit.setSelectedItem(rs.getString("crs_numberofcredit"));
                 if(rs.getString("crs_lab").equals("No")){
-                    chkLab.setSelected(false);
-                }else{
                     chkLab.setSelected(true);
+                }else{
+                    chkLab.setSelected(false);
                 }
-                txtDescription.setText(rs.getString("crs_description"));
+                txtDescription.setText(rs.getString("crs_desciption"));
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -191,17 +193,17 @@ private void populate() {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-         if (txtCode.getText().equals("")) {
+                if (txtCode.getText().equals("")) {
             JOptionPane.showMessageDialog(this,
-                    "Enter a Course Code", "Warning",
+                    "Enter a First Name", "Warning",
                     JOptionPane.WARNING_MESSAGE);
         } else if (txtName.getText().equals("")) {
             JOptionPane.showMessageDialog(this,
-                    "Enter a Course Name", "Warning",
+                    "Enter a Last Name", "Warning",
                     JOptionPane.WARNING_MESSAGE);
         } else {
-            String Code = txtCode.getText();
-            String Name = txtName.getText();
+            String code = txtCode.getText();
+            String name = txtName.getText();
             String type;
             if (rbMajor.isSelected()) {
                 type = "Major";
@@ -227,18 +229,18 @@ private void populate() {
                                 + "crs_name, crs_type, "
                                 + "crs_numberofcredit, crs_lab, "
                                 + "crs_description) "
-                                + "Values ( '" + Code + "', "
-                                + "'" + Name + "', '" + type + "', "
-                                + numberOfCredit + ", '" + lab + "', "
-                                + description  + "')");
+                                + "Values ( '" + code + "', "
+                                + "'" + name + "', '" + type + 
+                               "', "+ numberOfCredit + ", '" + lab + "', "
+                                +  description + "', ");
                 }else{
                     pstmt = con.prepareStatement("Update tbl_courses "
-                            + "Set crs_code = '" + Code + "', "
-                            + "crs_name = '" + Name + "', "
+                            + "Set crs_code = '" + code + "', "
+                            + "crs_name = '" + name + "', "
                             + "crs_type = '" + type + "', "
-                            + "crs_numberofcredit = " + numberOfCredit + ", "
+                            + "crs_numberofcredit = " + numberOfCredit + "', "
                             + "crs_lab = '" + lab + "', "
-                            + "crs_description = '" + description + "' "
+                            + "crs_description = '" + description + "', "
                             + "Where crs_id = " + crs_id);
                 }
                 pstmt.execute();
@@ -247,6 +249,10 @@ private void populate() {
                 System.err.println(ex.getMessage());
             }
         }
+    
+
+                
+
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**

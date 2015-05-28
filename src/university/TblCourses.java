@@ -11,6 +11,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,117 +24,133 @@ import javax.persistence.Transient;
  * @author Savio
  */
 @Entity
-@Table(name = "tbl_courses", catalog = "university", schema = "university")
+@Table(name = "tbl_courses", catalog = "university", schema = "")
 @NamedQueries({
-    @NamedQuery(name = "tblCoursesList.findAll", query = "SELECT u FROM tblCoursesList u"),
-    @NamedQuery(name = "tblCoursesList.findByCode", query = "SELECT u FROM tblCoursesList u WHERE u.code = :code"),
-    @NamedQuery(name = "tblCoursesList.findByName", query = "SELECT u FROM tblCoursesList u WHERE u.name = :name"),
-    @NamedQuery(name = "tblCoursesList.findByDescription", query = "SELECT u FROM tblCoursesList u WHERE u.description = :description"),
-    @NamedQuery(name = "tblCoursesList.findByType", query = "SELECT u FROM tblCoursesList u WHERE u.type = :type"),
-    @NamedQuery(name = "tblCoursesList.findByNumberofcredit", query = "SELECT u FROM tblCoursesList u WHERE u.numberofcredit = :numberofcredit"),
-    @NamedQuery(name = "tblCoursesList.findByLab", query = "SELECT u FROM tblCoursesList u WHERE u.lab = :lab")})
+    @NamedQuery(name = "TblCourses.findAll", query = "SELECT t FROM TblCourses t"),
+    @NamedQuery(name = "TblCourses.findByCrsId", query = "SELECT t FROM TblCourses t WHERE t.crsId = :crsId"),
+    @NamedQuery(name = "TblCourses.findByCrsCode", query = "SELECT t FROM TblCourses t WHERE t.crsCode = :crsCode"),
+    @NamedQuery(name = "TblCourses.findByCrsName", query = "SELECT t FROM TblCourses t WHERE t.crsName = :crsName"),
+    @NamedQuery(name = "TblCourses.findByCrsDescription", query = "SELECT t FROM TblCourses t WHERE t.crsDescription = :crsDescription"),
+    @NamedQuery(name = "TblCourses.findByCrsType", query = "SELECT t FROM TblCourses t WHERE t.crsType = :crsType"),
+    @NamedQuery(name = "TblCourses.findByCrsNumberofcredit", query = "SELECT t FROM TblCourses t WHERE t.crsNumberofcredit = :crsNumberofcredit"),
+    @NamedQuery(name = "TblCourses.findByCrsLab", query = "SELECT t FROM TblCourses t WHERE t.crsLab = :crsLab")})
 public class TblCourses implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "code")
-    private String code;
+    @Column(name = "crs_id")
+    private Integer crsId;
     @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-    @Column(name = "description")
-    private String description;
+    @Column(name = "crs_code")
+    private String crsCode;
     @Basic(optional = false)
-    @Column(name = "type")
-    private String type;
+    @Column(name = "crs_name")
+    private String crsName;
+    @Column(name = "crs_description")
+    private String crsDescription;
     @Basic(optional = false)
-    @Column(name = "numberofcredit")
-    private String numberofcredit;
+    @Column(name = "crs_type")
+    private String crsType;
     @Basic(optional = false)
-    @Column(name = "lab")
-    private String lab;
+    @Column(name = "crs_numberofcredit")
+    private int crsNumberofcredit;
+    @Basic(optional = false)
+    @Column(name = "crs_lab")
+    private String crsLab;
 
     public TblCourses() {
     }
 
-    public TblCourses(String code) {
-        this.code = code;
+    public TblCourses(Integer crsId) {
+        this.crsId = crsId;
     }
 
-    public TblCourses(String code, String name, String type, String numberofcredit, String lab) {
-        this.code = code;
-        this.name = name;
-        this.type = type;
-        this.numberofcredit = numberofcredit;
-        this.lab = lab;
+    public TblCourses(Integer crsId, String crsCode, String crsName, String crsType, int crsNumberofcredit, String crsLab) {
+        this.crsId = crsId;
+        this.crsCode = crsCode;
+        this.crsName = crsName;
+        this.crsType = crsType;
+        this.crsNumberofcredit = crsNumberofcredit;
+        this.crsLab = crsLab;
     }
 
-    public String getCode() {
-        return code;
+    public Integer getCrsId() {
+        return crsId;
     }
 
-    public void setCode(String code) {
-        String oldCode = this.code;
-        this.code = code;
-        changeSupport.firePropertyChange("code", oldCode, code);
+    public void setCrsId(Integer crsId) {
+        Integer oldCrsId = this.crsId;
+        this.crsId = crsId;
+        changeSupport.firePropertyChange("crsId", oldCrsId, crsId);
     }
 
-    public String getName() {
-        return name;
+    public String getCrsCode() {
+        return crsCode;
     }
 
-    public void setName(String name) {
-        String oldName = this.name;
-        this.name = name;
-        changeSupport.firePropertyChange("name", oldName, name);
+    public void setCrsCode(String crsCode) {
+        String oldCrsCode = this.crsCode;
+        this.crsCode = crsCode;
+        changeSupport.firePropertyChange("crsCode", oldCrsCode, crsCode);
     }
 
-    public String getDescription() {
-        return description;
+    public String getCrsName() {
+        return crsName;
     }
 
-    public void setDescription(String description) {
-        String oldDescription = this.description;
-        this.description = description;
-        changeSupport.firePropertyChange("description", oldDescription, description);
+    public void setCrsName(String crsName) {
+        String oldCrsName = this.crsName;
+        this.crsName = crsName;
+        changeSupport.firePropertyChange("crsName", oldCrsName, crsName);
     }
 
-    public String getType() {
-        return type;
+    public String getCrsDescription() {
+        return crsDescription;
     }
 
-    public void setType(String type) {
-        String oldType = this.type;
-        this.type = type;
-        changeSupport.firePropertyChange("type", oldType, type);
+    public void setCrsDescription(String crsDescription) {
+        String oldCrsDescription = this.crsDescription;
+        this.crsDescription = crsDescription;
+        changeSupport.firePropertyChange("crsDescription", oldCrsDescription, crsDescription);
     }
 
-    public String getNumberofcredit() {
-        return numberofcredit;
+    public String getCrsType() {
+        return crsType;
     }
 
-    public void setNumberofcredit(String numberofcredit) {
-        String oldNumberofcredit = this.numberofcredit;
-        this.numberofcredit = numberofcredit;
-        changeSupport.firePropertyChange("numberofcredit", oldNumberofcredit, numberofcredit);
+    public void setCrsType(String crsType) {
+        String oldCrsType = this.crsType;
+        this.crsType = crsType;
+        changeSupport.firePropertyChange("crsType", oldCrsType, crsType);
     }
 
-    public String getLab() {
-        return lab;
+    public int getCrsNumberofcredit() {
+        return crsNumberofcredit;
     }
 
-    public void setLab(String lab) {
-        String oldLab = this.lab;
-        this.lab = lab;
-        changeSupport.firePropertyChange("lab", oldLab, lab);
+    public void setCrsNumberofcredit(int crsNumberofcredit) {
+        int oldCrsNumberofcredit = this.crsNumberofcredit;
+        this.crsNumberofcredit = crsNumberofcredit;
+        changeSupport.firePropertyChange("crsNumberofcredit", oldCrsNumberofcredit, crsNumberofcredit);
+    }
+
+    public String getCrsLab() {
+        return crsLab;
+    }
+
+    public void setCrsLab(String crsLab) {
+        String oldCrsLab = this.crsLab;
+        this.crsLab = crsLab;
+        changeSupport.firePropertyChange("crsLab", oldCrsLab, crsLab);
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (code != null ? code.hashCode() : 0);
+        hash += (crsId != null ? crsId.hashCode() : 0);
         return hash;
     }
 
@@ -143,7 +161,7 @@ public class TblCourses implements Serializable {
             return false;
         }
         TblCourses other = (TblCourses) object;
-        if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
+        if ((this.crsId == null && other.crsId != null) || (this.crsId != null && !this.crsId.equals(other.crsId))) {
             return false;
         }
         return true;
@@ -151,7 +169,7 @@ public class TblCourses implements Serializable {
 
     @Override
     public String toString() {
-        return "university.University_1[ code=" + code + " ]";
+        return "university.TblCourses[ crsId=" + crsId + " ]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

@@ -13,7 +13,8 @@ import javax.swing.JOptionPane;
  * @author Savio
  */
 public class Courses extends javax.swing.JFrame {
-        
+
+    
     public Connection con;
 
     /**
@@ -54,8 +55,8 @@ public class Courses extends javax.swing.JFrame {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        coursesPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("university?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
-        tblCoursesQuery = java.beans.Beans.isDesignTime() ? null : coursesPUEntityManager.createQuery("SELECT u FROM University_1 u");
+        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("university?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
+        tblCoursesQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM TblCourses t");
         tblCoursesList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tblCoursesQuery.getResultList();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCourses = new javax.swing.JTable();
@@ -66,29 +67,27 @@ public class Courses extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblCoursesList, tblCourses);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${code}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crsId}"));
+        columnBinding.setColumnName("ID");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crsCode}"));
         columnBinding.setColumnName("Code");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crsName}"));
         columnBinding.setColumnName("Name");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crsDescription}"));
         columnBinding.setColumnName("Description");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${type}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crsType}"));
         columnBinding.setColumnName("Type");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${numberofcredit}"));
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crsNumberofcredit}"));
         columnBinding.setColumnName("Number Of Credit");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lab}"));
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crsLab}"));
         columnBinding.setColumnName("Lab");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblCourses);
@@ -191,14 +190,14 @@ public class Courses extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
         private void refreshTable() {
-        coursesPUEntityManager.getTransaction().begin();
+        entityManager.getTransaction().begin();
         java.util.Collection data = tblCoursesQuery.getResultList();
         for (Object entity : data) {
-            coursesPUEntityManager.refresh(entity);
+            entityManager.refresh(entity);
         }
         tblCoursesList.clear();
         tblCoursesList.addAll(data);
-        coursesPUEntityManager.getTransaction().commit();
+        entityManager.getTransaction().commit();
         bindingGroup.unbind();
         bindingGroup.bind();
         tblCourses.getColumnModel().getColumn(0).setMinWidth(0);
@@ -249,7 +248,7 @@ public class Courses extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;
-    private javax.persistence.EntityManager coursesPUEntityManager;
+    private javax.persistence.EntityManager entityManager;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCourses;
     private java.util.List<university.TblCourses> tblCoursesList;
