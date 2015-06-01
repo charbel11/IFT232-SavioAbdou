@@ -14,12 +14,6 @@ public class Course extends javax.swing.JDialog {
 
     private Connection con;
     private int crs_id;
-    private int crs_numberofCredit;
-    private String crs_description;
-    private String crs_Name;
-    private String crs_Code;
-    private String crs_type;
-    private String crs_lab;
 
     public Course(java.awt.Frame parent, boolean modal, Connection con, int crs_id) {
         super(parent, modal);
@@ -44,25 +38,22 @@ public class Course extends javax.swing.JDialog {
             if (rs.next()) {
                 txtCode.setText(rs.getString("crs_code"));
                 txtName.setText(rs.getString("crs_name"));
-                if(rs.getString("crs_type").equals("Major")){
-                    rbMajor.setSelected(true);
-                }else{
-                    rbElective.setSelected(true);
-                }
-                cbxNumberOfCredit.setSelectedItem(rs.getString("crs_numberofcredit"));
-                
-          if(rs.getString("crs_lab").equals("No")){
-                    chkLab.setSelected(false);
-                }else{
-                    chkLab.setSelected(true);
-           
                 txtDescription.setText(rs.getString("crs_description"));
+                cbxType.setSelectedItem(rs.getString("crs_type"));
+                cbxNumberOfCredit.setSelectedItem(rs.getString("crs_numberofcredit"));
+                if(rs.getString("crs_lab").equals("Yes")){
+                    chkLab.setSelected(true);
+                }else{
+                    chkLab.setSelected(false);
+                }
+                
+               
             }
-     }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
+
 
 
     /**
@@ -80,8 +71,6 @@ public class Course extends javax.swing.JDialog {
         txtCode = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        rbMajor = new javax.swing.JRadioButton();
-        rbElective = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         cbxNumberOfCredit = new javax.swing.JComboBox();
         chkLab = new javax.swing.JCheckBox();
@@ -89,6 +78,7 @@ public class Course extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
         btnSave = new javax.swing.JButton();
+        cbxType = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -109,12 +99,6 @@ public class Course extends javax.swing.JDialog {
         });
 
         jLabel3.setText("Course Type:");
-
-        buttonGroup1.add(rbMajor);
-        rbMajor.setText("Major");
-
-        buttonGroup1.add(rbElective);
-        rbElective.setText("Elective");
 
         jLabel4.setText("Number Of Credit:");
 
@@ -150,6 +134,8 @@ public class Course extends javax.swing.JDialog {
             }
         });
 
+        cbxType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Major", "Elective" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,18 +147,15 @@ public class Course extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rbMajor)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rbElective))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel2)))
+                                        .addComponent(jLabel2))
+                                    .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -182,7 +165,7 @@ public class Course extends javax.swing.JDialog {
                                         .addComponent(cbxNumberOfCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(chkLab))
-                        .addGap(24, 39, Short.MAX_VALUE))
+                        .addGap(24, 30, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -204,17 +187,16 @@ public class Course extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(rbMajor)
-                    .addComponent(rbElective)
                     .addComponent(jLabel4)
-                    .addComponent(cbxNumberOfCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxNumberOfCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(chkLab)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(btnSave)
                 .addContainerGap())
         );
@@ -223,36 +205,28 @@ public class Course extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
-                 if (txtCode.getText().equals("")) {
+     if (txtCode.getText().equals("")) {
             JOptionPane.showMessageDialog(this,
-                    "Enter a course code", "Warning",
+                    "Enter A Course Code", "Warning",
                     JOptionPane.WARNING_MESSAGE);
         } else if (txtName.getText().equals("")) {
             JOptionPane.showMessageDialog(this,
-                    "Enter a course name", "Warning",
+                    "Enter A Course Name", "Warning",
                     JOptionPane.WARNING_MESSAGE);
         } else {
-            String crs_Code = txtCode.getText();
-            String crs_Name = txtName.getText();
-            String crs_type;
-            if (rbMajor.isSelected()) {
-                crs_type = "Major";
+            String Code = txtCode.getText();
+            String Name = txtName.getText();
+            String description = txtDescription.getText();
+            String type= cbxType.getSelectedItem().toString();
+            int numberOfCredit= Integer.parseInt(cbxNumberOfCredit.getSelectedItem().toString());
+            String lab;
+            if (!chkLab.isSelected()) {
+                lab = "No";
             } else {
-                crs_type = "Elective";
+                lab = "Yes";
             }
-                   int crs_numberOfCredit= Integer.parseInt(cbxNumberOfCredit.getSelectedItem().toString());
-
-           String crs_lab;
-            if (chkLab.isSelected()) {
-                crs_lab = "Yes";
-            } else {
-                crs_lab = "No";
-            }
-            String crs_description = txtDescription.getText();
-        }
-                
-       try {
+            
+            try {
                 PreparedStatement pstmt;
                 if(crs_id==0){
                        pstmt = con.prepareStatement("Insert Into "
@@ -260,18 +234,18 @@ public class Course extends javax.swing.JDialog {
                                 + "crs_name, crs_description, "
                                 + "crs_type, crs_numberofcredit, "
                                 + "crs_lab) "
-                                + "Values ( '" + crs_Code + "', "
-                                + "'" + crs_Name + "', '" + crs_description+ "', '"
-                                + crs_type + "', " + crs_numberofCredit + ", "
-                                + crs_lab + "')");
+                                + "Values ( '" + Code + "', "
+                                + "'" + Name + "', '" + description+ "', '"
+                                + type + "', " + numberOfCredit + ", '"
+                                + lab + "')");
                 }else{
                     pstmt = con.prepareStatement("Update tbl_courses "
-                            + "Set crs_code = '" + crs_Code + "', "
-                            + "crs_name = '" + crs_Name + "', "
-                            + "crs_description = '" + crs_description + "', "
-                            + "crs_type = '" + crs_type + "' , "
-                            + "crs_numberofcredit= " + crs_numberofCredit + ", "
-                            + "crs_lab = '" + crs_lab + "'" 
+                            + "Set crs_code = '" + Code + "', "
+                            + "crs_name = '" + Name + "', "
+                            + "crs_description = '" + description + "', "
+                            + "crs_type = '" + type + "', "
+                            + "crs_numberofcredit= " + numberOfCredit + ", "
+                            + "crs_lab = '" + lab + "'" 
                             + "Where crs_id = " + crs_id);
                 }
                 pstmt.execute();
@@ -279,6 +253,7 @@ public class Course extends javax.swing.JDialog {
             } catch (SQLException ex) {
                 System.err.println(ex.getMessage());
             }
+        }
         
          
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -313,11 +288,6 @@ public class Course extends javax.swing.JDialog {
 
     private void chkLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkLabActionPerformed
         // TODO add your handling code here:
-         if (chkLab.isSelected()) {
-                crs_lab = "Yes";
-            } else {
-                crs_lab = "No";
-            }
     }//GEN-LAST:event_chkLabActionPerformed
 
     /**
@@ -368,6 +338,7 @@ public class Course extends javax.swing.JDialog {
     private javax.swing.JButton btnSave;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbxNumberOfCredit;
+    private javax.swing.JComboBox cbxType;
     private javax.swing.JCheckBox chkLab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -375,8 +346,6 @@ public class Course extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton rbElective;
-    private javax.swing.JRadioButton rbMajor;
     private javax.swing.JTextField txtCode;
     private javax.swing.JTextArea txtDescription;
     private javax.swing.JTextField txtName;
