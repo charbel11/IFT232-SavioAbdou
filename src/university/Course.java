@@ -7,17 +7,19 @@ package university;
 
 
 import javax.swing.JOptionPane;
-
-/**
- *
- * @author Prof
- */
 import java.sql.*;
+import javax.swing.JFrame;
 
 public class Course extends javax.swing.JDialog {
 
     private Connection con;
     private int crs_id;
+    private int crs_numberofCredit;
+    private String crs_description;
+    private String crs_Name;
+    private String crs_Code;
+    private String crs_type;
+    private String crs_lab;
 
     public Course(java.awt.Frame parent, boolean modal, Connection con, int crs_id) {
         super(parent, modal);
@@ -48,13 +50,15 @@ public class Course extends javax.swing.JDialog {
                     rbElective.setSelected(true);
                 }
                 cbxNumberOfCredit.setSelectedItem(rs.getString("crs_numberofcredit"));
-                if(rs.getString("crs_lab").equals("No")){
-                    chkLab.setSelected(true);
-                }else{
+                
+          if(rs.getString("crs_lab").equals("No")){
                     chkLab.setSelected(false);
-                }
-                txtDescription.setText(rs.getString("crs_desciption"));
+                }else{
+                    chkLab.setSelected(true);
+           
+                txtDescription.setText(rs.getString("crs_description"));
             }
+     }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -92,6 +96,18 @@ public class Course extends javax.swing.JDialog {
 
         jLabel2.setText("Course Name:");
 
+        txtCode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodeKeyTyped(evt);
+            }
+        });
+
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNameKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Course Type:");
 
         buttonGroup1.add(rbMajor);
@@ -102,14 +118,29 @@ public class Course extends javax.swing.JDialog {
 
         jLabel4.setText("Number Of Credit:");
 
-        cbxNumberOfCredit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3" }));
+        cbxNumberOfCredit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3", "2", "1" }));
+        cbxNumberOfCredit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxNumberOfCreditActionPerformed(evt);
+            }
+        });
 
         chkLab.setText("Lab");
+        chkLab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkLabActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Description:");
 
         txtDescription.setColumns(20);
         txtDescription.setRows(5);
+        txtDescription.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescriptionKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(txtDescription);
 
         btnSave.setText("Save");
@@ -193,54 +224,54 @@ public class Course extends javax.swing.JDialog {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-                if (txtCode.getText().equals("")) {
+                 if (txtCode.getText().equals("")) {
             JOptionPane.showMessageDialog(this,
-                    "Enter a First Name", "Warning",
+                    "Enter a course code", "Warning",
                     JOptionPane.WARNING_MESSAGE);
         } else if (txtName.getText().equals("")) {
             JOptionPane.showMessageDialog(this,
-                    "Enter a Last Name", "Warning",
+                    "Enter a course name", "Warning",
                     JOptionPane.WARNING_MESSAGE);
         } else {
-            String code = txtCode.getText();
-            String name = txtName.getText();
-            String type;
+            String crs_Code = txtCode.getText();
+            String crs_Name = txtName.getText();
+            String crs_type;
             if (rbMajor.isSelected()) {
-                type = "Major";
+                crs_type = "Major";
             } else {
-                type = "Elective";
+                crs_type = "Elective";
             }
-            int numberOfCredit
-                    = Integer.parseInt(
-                            cbxNumberOfCredit.
-                            getSelectedItem().toString());
-            String lab;
-            if (!chkLab.isSelected()) {
-                lab = "No";
+                   int crs_numberOfCredit= Integer.parseInt(cbxNumberOfCredit.getSelectedItem().toString());
+
+           String crs_lab;
+            if (chkLab.isSelected()) {
+                crs_lab = "Yes";
             } else {
-                lab = "Yes";
+                crs_lab = "No";
             }
-            String description = txtDescription.getText();
-            try {
+            String crs_description = txtDescription.getText();
+        }
+                
+       try {
                 PreparedStatement pstmt;
                 if(crs_id==0){
                        pstmt = con.prepareStatement("Insert Into "
                                 + "tbl_courses (crs_code,"
-                                + "crs_name, crs_type, "
-                                + "crs_numberofcredit, crs_lab, "
-                                + "crs_description) "
-                                + "Values ( '" + code + "', "
-                                + "'" + name + "', '" + type + 
-                               "', "+ numberOfCredit + ", '" + lab + "', "
-                                +  description + "', ");
+                                + "crs_name, crs_description, "
+                                + "crs_type, crs_numberofcredit, "
+                                + "crs_lab) "
+                                + "Values ( '" + crs_Code + "', "
+                                + "'" + crs_Name + "', '" + crs_description+ "', '"
+                                + crs_type + "', " + crs_numberofCredit + ", "
+                                + crs_lab + "')");
                 }else{
                     pstmt = con.prepareStatement("Update tbl_courses "
-                            + "Set crs_code = '" + code + "', "
-                            + "crs_name = '" + name + "', "
-                            + "crs_type = '" + type + "', "
-                            + "crs_numberofcredit = " + numberOfCredit + "', "
-                            + "crs_lab = '" + lab + "', "
-                            + "crs_description = '" + description + "', "
+                            + "Set crs_code = '" + crs_Code + "', "
+                            + "crs_name = '" + crs_Name + "', "
+                            + "crs_description = '" + crs_description + "', "
+                            + "crs_type = '" + crs_type + "' , "
+                            + "crs_numberofcredit= " + crs_numberofCredit + ", "
+                            + "crs_lab = '" + crs_lab + "'" 
                             + "Where crs_id = " + crs_id);
                 }
                 pstmt.execute();
@@ -248,12 +279,46 @@ public class Course extends javax.swing.JDialog {
             } catch (SQLException ex) {
                 System.err.println(ex.getMessage());
             }
-        }
-    
-
-                
-
+        
+         
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void txtCodeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodeKeyTyped
+        // TODO add your handling code here:
+           if ((!Character.isDigit(evt.getKeyChar())|| txtCode.getText().length() > 5)
+             &&(Character.isDigit(evt.getKeyChar())|| txtCode.getText().length() > 5)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCodeKeyTyped
+
+    private void txtNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyTyped
+        // TODO add your handling code here:
+         if ((!Character.isDigit(evt.getKeyChar())|| txtName.getText().length() > 39)
+            && (Character.isDigit(evt.getKeyChar())|| txtName.getText().length() > 39)  ) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNameKeyTyped
+
+    private void txtDescriptionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescriptionKeyTyped
+        // TODO add your handling code here:
+        if ((!Character.isDigit(evt.getKeyChar())|| txtDescription.getText().length() > 249)
+          &&(Character.isDigit(evt.getKeyChar())|| txtDescription.getText().length() > 249)   ) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDescriptionKeyTyped
+
+    private void cbxNumberOfCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxNumberOfCreditActionPerformed
+
+    }//GEN-LAST:event_cbxNumberOfCreditActionPerformed
+
+    private void chkLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkLabActionPerformed
+        // TODO add your handling code here:
+         if (chkLab.isSelected()) {
+                crs_lab = "Yes";
+            } else {
+                crs_lab = "No";
+            }
+    }//GEN-LAST:event_chkLabActionPerformed
 
     /**
      * @param args the command line arguments
